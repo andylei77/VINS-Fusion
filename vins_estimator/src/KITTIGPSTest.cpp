@@ -26,6 +26,12 @@ using namespace Eigen;
 Estimator estimator;
 ros::Publisher pubGPS;
 
+
+//#include "LocalCartesian.hpp"
+#include "../../global_fusion/ThirdParty/GeographicLib/include/LocalCartesian.hpp"
+bool initGPS = false;
+GeographicLib::LocalCartesian geoConverter;
+
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "vins_estimator");
@@ -172,11 +178,40 @@ int main(int argc, char** argv)
 			Eigen::Matrix<double, 4, 4> pose;
 			estimator.getPoseInWorldFrame(pose);
 			if(outFile != NULL)
-				fprintf (outFile, "%f %f %f %f %f %f %f %f %f %f %f %f \n",pose(0,0), pose(0,1), pose(0,2),pose(0,3),
+				fprintf (outFile, "%f %f %f %f %f %f %f %f %f %f %f %f\n",pose(0,0), pose(0,1), pose(0,2),pose(0,3),
 																	       pose(1,0), pose(1,1), pose(1,2),pose(1,3),
 																	       pose(2,0), pose(2,1), pose(2,2),pose(2,3));
-			
-			// cv::imshow("leftImage", imLeft);
+
+      Quaterniond tmp_Q = Quaterniond(Utility::ypr2R(Eigen::Vector3d{yaw, pitch, roll}));
+
+
+      double latitude = lat;
+      double longitude = lon;
+      double altitude = alt;
+      double xyz[3];
+      //double t_x,t_y,t_z;
+      if(!initGPS) {
+        geoConverter.Reset(latitude, longitude, altitude);
+        initGPS = true;
+      }
+      geoConverter.Forward(latitude, longitude, altitude, xyz[0], xyz[1], xyz[2]);
+
+      std::ofstream foutC("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/gps_global.csv", ios::app);
+      foutC.setf(ios::fixed, ios::floatfield);
+      foutC.precision(0);
+      foutC << ros::Time(imgTime).toSec() * 1e9 << " ";
+      foutC.precision(5);
+      foutC << xyz[0] << " "
+            << xyz[1] << " "
+            << xyz[2] << " "
+            << tmp_Q.x() << " "
+            << tmp_Q.y() << " "
+            << tmp_Q.z() << " "
+            << tmp_Q.w()
+            << endl;
+      foutC.close();
+
+      // cv::imshow("leftImage", imLeft);
 			// cv::imshow("rightImage", imRight);
 			// cv::waitKey(2);
 		}
