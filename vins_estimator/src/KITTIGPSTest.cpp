@@ -170,6 +170,9 @@ int main(int argc, char** argv)
 			gps_position.longitude = lon;
 			gps_position.altitude  = alt;
 			gps_position.position_covariance[0] = pos_accuracy;
+			gps_position.position_covariance[1] = yaw;
+      gps_position.position_covariance[2] = pitch;
+      gps_position.position_covariance[3] = roll;
 			//printf("pos_accuracy %f \n", pos_accuracy);
 			pubGPS.publish(gps_position);
 
@@ -196,20 +199,36 @@ int main(int argc, char** argv)
       }
       geoConverter.Forward(latitude, longitude, altitude, xyz[0], xyz[1], xyz[2]);
 
+      /*
+      Eigen::Quaterniond global_q;
+      Eigen::Vector3d global_t;
+      Eigen::Matrix4d WVIO_T_WGPS;
+      WVIO_T_WGPS << 1, 0, 0, 0,
+                     0, 0, -1, 0,
+                     0, 1, 0, 0,
+                     0, 0, 0, 1;
+      global_q = WVIO_T_WGPS.block<3, 3>(0, 0) * Utility::ypr2R(Eigen::Vector3d{yaw, pitch, roll});
+      global_t = WVIO_T_WGPS.block<3, 3>(0, 0) * Eigen::Vector3d(xyz[0], xyz[1], xyz[2])
+                                 + WVIO_T_WGPS.block<3, 1>(0, 3);
+      //global_q = tmp_Q;
+      //global_t = Eigen::Vector3d(xyz[0], xyz[1], xyz[2]);
+
+
       std::ofstream foutC("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/gps_global.csv", ios::app);
       foutC.setf(ios::fixed, ios::floatfield);
       foutC.precision(0);
       foutC << ros::Time(imgTime).toSec() * 1e9 << " ";
       foutC.precision(5);
-      foutC << xyz[0] << " "
-            << xyz[1] << " "
-            << xyz[2] << " "
-            << tmp_Q.x() << " "
-            << tmp_Q.y() << " "
-            << tmp_Q.z() << " "
-            << tmp_Q.w()
+      foutC << global_t.x() << " "
+            << global_t.y() << " "
+            << global_t.z() << " "
+            << global_q.x() << " "
+            << global_q.y() << " "
+            << global_q.z() << " "
+            << global_q.w()
             << endl;
       foutC.close();
+      */
 
       // cv::imshow("leftImage", imLeft);
 			// cv::imshow("rightImage", imRight);

@@ -9,8 +9,10 @@
  * Author: Qin Tong (qintonguav@gmail.com)
  *******************************************************/
 
+#include <fstream>
 #include "globalOpt.h"
 #include "Factors.h"
+#include "../../loop_fusion/src/utility/utility.h"
 
 GlobalOptimization::GlobalOptimization()
 {
@@ -76,7 +78,7 @@ void GlobalOptimization::getGlobalOdom(Eigen::Vector3d &odomP, Eigen::Quaternion
     odomQ = lastQ;
 }
 
-void GlobalOptimization::inputGPS(double t, double latitude, double longitude, double altitude, double posAccuracy)
+void GlobalOptimization::inputGPS(double t, double latitude, double longitude, double altitude, double posAccuracy, double yaw, double pitch, double roll)
 {
 	double xyz[3];
 	GPS2XYZ(latitude, longitude, altitude, xyz);
@@ -85,6 +87,46 @@ void GlobalOptimization::inputGPS(double t, double latitude, double longitude, d
 	GPSPositionMap[t] = tmp;
     newGPS = true;
 
+    if(set_fixed_WVIOTWGPS) {
+      std::vector<vector<double>> datas;
+      if(!save_backup_gps_data){
+        save_backup_gps_data = true;
+        datas = gps_data;
+        datas.push_back({xyz[0], xyz[1], xyz[2], yaw, pitch, roll});
+      }else{
+        datas.push_back({xyz[0], xyz[1], xyz[2], yaw, pitch, roll});
+      }
+
+      for(auto gps : datas){
+        double _x = gps[0];
+        double _y = gps[1];
+        double _z = gps[2];
+        double _yaw = gps[3];
+        double _pitch = gps[4];
+        double _roll = gps[5];
+        //Eigen::Matrix4d WVIO_T_WGPS = WGPS_T_WVIO.inverse();
+      Eigen::Quaterniond global_q;
+      global_q = WVIO_T_WGPS.block<3, 3>(0, 0) * Utility::ypr2R(Eigen::Vector3d{_yaw, _pitch, _roll});
+      Eigen::Vector3d global_t = WVIO_T_WGPS.block<3, 3>(0, 0) * Eigen::Vector3d(_x, _y, _z)
+                                 + WVIO_T_WGPS.block<3, 1>(0, 3);
+      // write result to file
+      std::ofstream foutC("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/gps_ground_truth.csv", ios::app);
+      foutC.setf(ios::fixed, ios::floatfield);
+      foutC.precision(0);
+      foutC << t * 1e9 << " ";
+      foutC.precision(5);
+      foutC << global_t.x() << " "
+            << global_t.y() << " "
+            << global_t.z() << " "
+            << global_q.x() << " "
+            << global_q.y() << " "
+            << global_q.z() << " "
+            << global_q.w()
+            << endl;
+      }
+    }else{
+      gps_data.push_back({xyz[0], xyz[1], xyz[2], yaw, pitch, roll});
+    }
 }
 
 void GlobalOptimization::optimize()
@@ -235,6 +277,12 @@ void GlobalOptimization::optimize()
             	                                                        globalPose[5], globalPose[6]).toRotationMatrix();
             	    WGPS_T_body.block<3, 1>(0, 3) = Eigen::Vector3d(globalPose[0], globalPose[1], globalPose[2]);
             	    WGPS_T_WVIO = WGPS_T_body * WVIO_T_body.inverse();
+            	    count_WVIOTWGPS++;
+                  if(set_fixed_WVIOTWGPS == false && count_WVIOTWGPS > 30){
+                    WVIO_T_WGPS = WGPS_T_WVIO.inverse();
+                    set_fixed_WVIOTWGPS = true;
+                    std::cout << " set_fixed_WVIOTWGPS ******************************************************************\n";
+                  }
             	}
             }
             updateGlobalPath();
@@ -250,6 +298,8 @@ void GlobalOptimization::optimize()
 
 void GlobalOptimization::updateGlobalPath()
 {
+  std::ofstream foutC("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/vio_global.csv");
+  foutC.setf(ios::fixed, ios::floatfield);
     global_path.poses.clear();
     map<double, vector<double>>::iterator iter;
     for (iter = globalPoseMap.begin(); iter != globalPoseMap.end(); iter++)
@@ -265,5 +315,25 @@ void GlobalOptimization::updateGlobalPath()
         pose_stamped.pose.orientation.y = iter->second[5];
         pose_stamped.pose.orientation.z = iter->second[6];
         global_path.poses.push_back(pose_stamped);
+
+      Eigen::Matrix4d WVIO_T_WGPS = WGPS_T_WVIO.inverse();
+      Eigen::Quaterniond global_q;
+      global_q = WVIO_T_WGPS.block<3, 3>(0, 0) * Eigen::Quaterniond(iter->second[3], iter->second[4],
+                                                                    iter->second[5], iter->second[6]).toRotationMatrix();
+      Eigen::Vector3d global_t = WVIO_T_WGPS.block<3, 3>(0, 0) * Eigen::Vector3d(iter->second[0], iter->second[1], iter->second[2])
+                                 + WVIO_T_WGPS.block<3, 1>(0, 3);
+      // write result to file
+      foutC.precision(0);
+      foutC << pose_stamped.header.stamp.toSec() * 1e9 << " ";
+      foutC.precision(5);
+      foutC << global_t.x() << " "
+            << global_t.y() << " "
+            << global_t.z() << " "
+            << global_q.x() << " "
+            << global_q.y() << " "
+            << global_q.z() << " "
+            << global_q.w()
+            << endl;
     }
+  foutC.close();
 }

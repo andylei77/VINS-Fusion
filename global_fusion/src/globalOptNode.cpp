@@ -111,7 +111,10 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
                 pos_accuracy = 1;
             //printf("receive covariance %lf \n", pos_accuracy);
             //if(GPS_msg->status.status > 8)
-                globalEstimator.inputGPS(t, latitude, longitude, altitude, pos_accuracy);
+            double yaw = GPS_msg->position_covariance[1];
+            double pitch = GPS_msg->position_covariance[2];
+            double roll = GPS_msg->position_covariance[3];
+            globalEstimator.inputGPS(t, latitude, longitude, altitude, pos_accuracy, yaw, pitch, roll);
             gpsQueue.pop();
             break;
         }
@@ -142,6 +145,7 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
     publish_car_model(t, global_t, global_q);
 
 
+    /*
     // write result to file
     std::ofstream foutC("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/vio_global.csv", ios::app);
     foutC.setf(ios::fixed, ios::floatfield);
@@ -157,6 +161,7 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
           << global_q.w()
           << endl;
     foutC.close();
+    */
 }
 
 int main(int argc, char **argv)

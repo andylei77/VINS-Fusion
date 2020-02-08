@@ -181,18 +181,18 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
 
     if (SAVE_LOOP_PATH)
     {
-        ofstream loop_path_file(VINS_RESULT_PATH, ios::app);
+        ofstream loop_path_file(VINS_RESULT_PATH+"_addkeyframe.csv", ios::app);
         loop_path_file.setf(ios::fixed, ios::floatfield);
         loop_path_file.precision(0);
-        loop_path_file << cur_kf->time_stamp * 1e9 << ",";
+        loop_path_file << cur_kf->time_stamp * 1e9 << " ";
         loop_path_file.precision(5);
-        loop_path_file  << P.x() << ","
-              << P.y() << ","
-              << P.z() << ","
-              << Q.w() << ","
-              << Q.x() << ","
-              << Q.y() << ","
-              << Q.z() << ","
+        loop_path_file  << P.x() << " "
+              << P.y() << " "
+              << P.z() << " "
+              << Q.x() << " "
+              << Q.y() << " "
+              << Q.z() << " "
+              << Q.w() //<< " "
               << endl;
         loop_path_file.close();
     }
@@ -604,6 +604,33 @@ void PoseGraph::optimize4DoF()
             updatePath();
         }
 
+        if(keyframelist.size() > last_keyframelist_size){
+          last_keyframelist_size = keyframelist.size();
+          Vector3d P;
+          Matrix3d R;
+          Quaterniond Q;
+          keyframelist.back()->getPose(P,R);
+          Q = R;
+          if (SAVE_LOOP_PATH)
+          {
+            ofstream loop_path_file(VINS_RESULT_PATH+"_optimize4DoF.csv", ios::app);
+            loop_path_file.setf(ios::fixed, ios::floatfield);
+            loop_path_file.precision(0);
+            loop_path_file << keyframelist.back()->time_stamp * 1e9 << " ";
+            loop_path_file.precision(5);
+            loop_path_file
+                << P.x() << " "
+                << P.y() << " "
+                << P.z() << " "
+                << Q.x() << " "
+                << Q.y() << " "
+                << Q.z() << " "
+                << Q.w() //<< " "
+                << endl;
+            loop_path_file.close();
+          }
+        }
+
         std::chrono::milliseconds dura(2000);
         std::this_thread::sleep_for(dura);
     }
@@ -773,6 +800,33 @@ void PoseGraph::optimize6DoF()
             updatePath();
         }
 
+        if(keyframelist.size() > last_keyframelist_size){
+          last_keyframelist_size = keyframelist.size();
+          Vector3d P;
+          Matrix3d R;
+          Quaterniond Q;
+          keyframelist.back()->getPose(P,R);
+          Q = R;
+          if (SAVE_LOOP_PATH)
+          {
+            ofstream loop_path_file(VINS_RESULT_PATH+"_optimize6DoF.csv", ios::app);
+            loop_path_file.setf(ios::fixed, ios::floatfield);
+            loop_path_file.precision(0);
+            loop_path_file << keyframelist.back()->time_stamp * 1e9 << " ";
+            loop_path_file.precision(5);
+            loop_path_file
+                << P.x() << " "
+                << P.y() << " "
+                << P.z() << " "
+                << Q.x() << " "
+                << Q.y() << " "
+                << Q.z() << " "
+                << Q.w() //<< " "
+                << endl;
+            loop_path_file.close();
+          }
+        }
+
         std::chrono::milliseconds dura(2000);
         std::this_thread::sleep_for(dura);
     }
@@ -831,15 +885,16 @@ void PoseGraph::updatePath()
             ofstream loop_path_file(VINS_RESULT_PATH, ios::app);
             loop_path_file.setf(ios::fixed, ios::floatfield);
             loop_path_file.precision(0);
-            loop_path_file << (*it)->time_stamp * 1e9 << ",";
+            loop_path_file << (*it)->time_stamp * 1e9 << " ";
             loop_path_file.precision(5);
-            loop_path_file  << P.x() << ","
-                  << P.y() << ","
-                  << P.z() << ","
-                  << Q.w() << ","
-                  << Q.x() << ","
-                  << Q.y() << ","
-                  << Q.z() << ","
+            loop_path_file
+                  << P.x() << " "
+                  << P.y() << " "
+                  << P.z() << " "
+                  << Q.x() << " "
+                  << Q.y() << " "
+                  << Q.z() << " "
+                  << Q.w() //<< " "
                   << endl;
             loop_path_file.close();
         }
