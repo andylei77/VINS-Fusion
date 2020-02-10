@@ -153,6 +153,7 @@ void GlobalOptimization::optimize()
             //add param
             mPoseMap.lock();
             int length = localPoseMap.size();
+            std::cout << " localPoseMap.size: "<< length << "******************************************************************\n";
             // w^t_i   w^q_i
             double t_array[length][3];
             double q_array[length][4];
@@ -276,7 +277,7 @@ void GlobalOptimization::optimize()
             	    WGPS_T_body.block<3, 3>(0, 0) = Eigen::Quaterniond(globalPose[3], globalPose[4], 
             	                                                        globalPose[5], globalPose[6]).toRotationMatrix();
             	    WGPS_T_body.block<3, 1>(0, 3) = Eigen::Vector3d(globalPose[0], globalPose[1], globalPose[2]);
-            	    WGPS_T_WVIO = WGPS_T_body * WVIO_T_body.inverse();
+            	    WGPS_T_WVIO = WGPS_T_body * WVIO_T_body.inverse(); // inclue 1) POSE between vio_world and gps_world  2) vio drift
             	    count_WVIOTWGPS++;
                   if(set_fixed_WVIOTWGPS == false && count_WVIOTWGPS > 30){
                     WVIO_T_WGPS = WGPS_T_WVIO.inverse();

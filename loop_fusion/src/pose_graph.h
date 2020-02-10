@@ -99,6 +99,8 @@ private:
 	ros::Publisher pub_path[10];
 
 	int last_keyframelist_size = 0;
+  std::chrono::high_resolution_clock::time_point last_output_time_point = std::chrono::high_resolution_clock::now();
+  std::chrono::high_resolution_clock::time_point last_addkeyframe_time_point = std::chrono::high_resolution_clock::now();
 };
 
 template <typename T> inline

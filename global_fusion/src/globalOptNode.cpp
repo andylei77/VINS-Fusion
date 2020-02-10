@@ -30,6 +30,7 @@ nav_msgs::Path *global_path;
 double last_vio_t = -1;
 std::queue<sensor_msgs::NavSatFixConstPtr> gpsQueue;
 std::mutex m_buf;
+std::chrono::high_resolution_clock::time_point last_output_pose_time_point = std::chrono::high_resolution_clock::now();
 
 void publish_car_model(double t, Eigen::Vector3d t_w_car, Eigen::Quaterniond q_w_car)
 {
@@ -128,6 +129,12 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
     Eigen::Vector3d global_t;
     Eigen:: Quaterniond global_q;
     globalEstimator.getGlobalOdom(global_t, global_q);
+    auto current_output_time_point = std::chrono::high_resolution_clock::now();
+    ofstream time_file("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/viogps_output_pose_time.csv", ios::app);
+    time_file.setf(ios::fixed, ios::floatfield);
+    time_file << std::chrono::duration<double>(current_output_time_point - last_output_pose_time_point).count() << endl;
+    last_output_pose_time_point = current_output_time_point;
+    time_file.close();
 
     nav_msgs::Odometry odometry;
     odometry.header = pose_msg->header;

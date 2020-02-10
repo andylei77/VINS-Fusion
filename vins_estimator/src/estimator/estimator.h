@@ -174,4 +174,6 @@ class Estimator
 
     bool initFirstPoseFlag;
     bool initThreadFlag;
+
+    std::chrono::high_resolution_clock::time_point last_vio_output_time_point = std::chrono::high_resolution_clock::now();
 };

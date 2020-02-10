@@ -181,6 +181,14 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
 
     if (SAVE_LOOP_PATH)
     {
+      // Regis or SLAM FPS
+      auto current_output_time_point = std::chrono::high_resolution_clock::now();
+      ofstream time_file(VINS_RESULT_PATH+"_addkeyframe_time.csv", ios::app);
+      time_file.setf(ios::fixed, ios::floatfield);
+      time_file << std::chrono::duration<double>(current_output_time_point - last_addkeyframe_time_point).count() << endl;
+      last_addkeyframe_time_point = current_output_time_point;
+      time_file.close();
+
         ofstream loop_path_file(VINS_RESULT_PATH+"_addkeyframe.csv", ios::app);
         loop_path_file.setf(ios::fixed, ios::floatfield);
         loop_path_file.precision(0);
@@ -605,6 +613,14 @@ void PoseGraph::optimize4DoF()
         }
 
         if(keyframelist.size() > last_keyframelist_size){
+          // Regis or SLAM FPS
+          auto current_output_time_point = std::chrono::high_resolution_clock::now();
+          ofstream time_file(VINS_RESULT_PATH+"_optimize4DoF_time.csv", ios::app);
+          time_file.setf(ios::fixed, ios::floatfield);
+          time_file << std::chrono::duration<double>(current_output_time_point - last_output_time_point).count() << endl;
+          last_output_time_point = current_output_time_point;
+          time_file.close();
+
           last_keyframelist_size = keyframelist.size();
           Vector3d P;
           Matrix3d R;
@@ -801,6 +817,14 @@ void PoseGraph::optimize6DoF()
         }
 
         if(keyframelist.size() > last_keyframelist_size){
+          // Regis or SLAM FPS
+          auto current_output_time_point = std::chrono::high_resolution_clock::now();
+          ofstream time_file(VINS_RESULT_PATH+"_optimize6DoF_time.csv", ios::app);
+          time_file.setf(ios::fixed, ios::floatfield);
+          time_file << std::chrono::duration<double>(current_output_time_point - last_output_time_point).count() << endl;
+          last_output_time_point = current_output_time_point;
+          time_file.close();
+
           last_keyframelist_size = keyframelist.size();
           Vector3d P;
           Matrix3d R;

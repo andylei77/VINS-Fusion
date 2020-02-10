@@ -318,6 +318,13 @@ void Estimator::processMeasurements()
             processImage(feature.second, feature.first);
             prevTime = curTime;
 
+            auto current_output_time_point = std::chrono::high_resolution_clock::now();
+            ofstream time_file(VINS_RESULT_PATH+"_vio_time.csv", ios::app);
+            time_file.setf(ios::fixed, ios::floatfield);
+            time_file << std::chrono::duration<double>(current_output_time_point - last_vio_output_time_point).count() << endl;
+            last_vio_output_time_point = current_output_time_point;
+            time_file.close();
+
             printStatistics(*this, 0);
 
             std_msgs::Header header;
