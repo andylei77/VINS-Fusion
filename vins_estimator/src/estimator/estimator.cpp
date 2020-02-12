@@ -544,10 +544,18 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
     else
     {
         TicToc t_solve;
+        // feature triangulate time
+        TicToc t_feature_triangulate_time;
         if(!USE_IMU)
             f_manager.initFramePoseByPnP(frame_count, Ps, Rs, tic, ric);
         f_manager.triangulate(frame_count, Ps, Rs, tic, ric);
+        ROS_INFO_STREAM("t_feature_triangulate_time: " << t_feature_triangulate_time.toc()/1000.0);
+        // optimization time
+        TicToc t_optimization_time;
         optimization();
+        ROS_INFO_STREAM("t_optimization_time: " << t_optimization_time.toc()/1000.0);
+        // post processing time
+        TicToc t_post_processing_time;
         set<int> removeIndex;
         outliersRejection(removeIndex);
         f_manager.removeOutlier(removeIndex);
@@ -581,7 +589,8 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
         last_R0 = Rs[0];
         last_P0 = Ps[0];
         updateLatestStates();
-    }  
+        ROS_INFO_STREAM("t_post_processing_time: " << t_post_processing_time.toc()/1000.0);
+    }
 }
 
 bool Estimator::initialStructure()
@@ -1116,7 +1125,9 @@ void Estimator::optimization()
 
     ROS_DEBUG("visual measurement count: %d", f_m_cnt);
     //printf("prepare for ceres: %f \n", t_prepare.toc());
+    ROS_INFO_STREAM("t_optimization_prepare: " << t_prepare.toc()/1000.0);
 
+    TicToc t_optimize;
     ceres::Solver::Options options;
 
     options.linear_solver_type = ceres::DENSE_SCHUR;
@@ -1139,13 +1150,15 @@ void Estimator::optimization()
 
     double2vector();
     //printf("frame_count: %d \n", frame_count);
+    ROS_INFO_STREAM("t_optimization_optimize: " << t_optimize.toc()/1000.0);
 
     if(frame_count < WINDOW_SIZE)
         return;
-    
+
     TicToc t_whole_marginalization;
     if (marginalization_flag == MARGIN_OLD)
     {
+        TicToc t_margin_create_constraint;
         MarginalizationInfo *marginalization_info = new MarginalizationInfo();
         vector2double();
 
@@ -1232,15 +1245,19 @@ void Estimator::optimization()
                 }
             }
         }
+        ROS_INFO_STREAM("t_marginalization_create_constraint: " << t_margin_create_constraint.toc()/1000.0);
 
         TicToc t_pre_margin;
         marginalization_info->preMarginalize();
         ROS_DEBUG("pre marginalization %f ms", t_pre_margin.toc());
-        
+        ROS_INFO_STREAM("t_marginalization_pre_margin: " << t_pre_margin.toc()/1000.0);
+
         TicToc t_margin;
         marginalization_info->marginalize();
         ROS_DEBUG("marginalization %f ms", t_margin.toc());
+        ROS_INFO_STREAM("t_marginalization_margin: " << t_margin.toc()/1000.0);
 
+        TicToc t_after_margin;
         std::unordered_map<long, double *> addr_shift;
         for (int i = 1; i <= WINDOW_SIZE; i++)
         {
@@ -1259,13 +1276,14 @@ void Estimator::optimization()
             delete last_marginalization_info;
         last_marginalization_info = marginalization_info;
         last_marginalization_parameter_blocks = parameter_blocks;
-        
+        ROS_INFO_STREAM("t_marginalization_after_margin: " << t_after_margin.toc()/1000.0);
     }
     else
     {
         if (last_marginalization_info &&
             std::count(std::begin(last_marginalization_parameter_blocks), std::end(last_marginalization_parameter_blocks), para_Pose[WINDOW_SIZE - 1]))
         {
+            TicToc t_margin_create_constraint;
 
             MarginalizationInfo *marginalization_info = new MarginalizationInfo();
             vector2double();
@@ -1286,17 +1304,21 @@ void Estimator::optimization()
 
                 marginalization_info->addResidualBlockInfo(residual_block_info);
             }
+            ROS_INFO_STREAM("t_marginalization_create_constraint: " << t_margin_create_constraint.toc()/1000.0);
 
             TicToc t_pre_margin;
             ROS_DEBUG("begin marginalization");
             marginalization_info->preMarginalize();
             ROS_DEBUG("end pre marginalization, %f ms", t_pre_margin.toc());
+            ROS_INFO_STREAM("t_marginalization_pre_margin: " << t_pre_margin.toc()/1000.0);
 
             TicToc t_margin;
             ROS_DEBUG("begin marginalization");
             marginalization_info->marginalize();
             ROS_DEBUG("end marginalization, %f ms", t_margin.toc());
-            
+            ROS_INFO_STREAM("t_marginalization_margin: " << t_margin.toc()/1000.0);
+
+            TicToc t_after_margin;
             std::unordered_map<long, double *> addr_shift;
             for (int i = 0; i <= WINDOW_SIZE; i++)
             {
@@ -1326,11 +1348,13 @@ void Estimator::optimization()
                 delete last_marginalization_info;
             last_marginalization_info = marginalization_info;
             last_marginalization_parameter_blocks = parameter_blocks;
-            
+            ROS_INFO_STREAM("t_marginalization_after_margin: " << t_after_margin.toc()/1000.0);
+
         }
     }
     //printf("whole marginalization costs: %f \n", t_whole_marginalization.toc());
     //printf("whole time for ceres: %f \n", t_whole.toc());
+    ROS_INFO_STREAM("t_marginalization: " << t_whole_marginalization.toc()/1000.0);
 }
 
 void Estimator::slideWindow()
