@@ -289,6 +289,10 @@ void GlobalOptimization::optimize()
             updateGlobalPath();
             //printf("global time %f \n", globalOptimizationTime.toc());
             mPoseMap.unlock();
+          ofstream time_file("/home/andy/selfdrivingcar/catkin_ws_2/outputpath/globalOptimizationTime.csv", ios::app);
+          time_file.setf(ios::fixed, ios::floatfield);
+          time_file << globalOptimizationTime.toc() / 1000.0 << "," << length << std::endl;
+          time_file.close();
         }
         std::chrono::milliseconds dura(2000);
         std::this_thread::sleep_for(dura);

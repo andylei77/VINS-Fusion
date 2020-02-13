@@ -93,6 +93,11 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     {
         TicToc tmp_t;
         loop_index = detectLoop(cur_kf, cur_kf->index);
+        ofstream time_file(VINS_RESULT_PATH+"_detectloop_time.csv", ios::app);
+        time_file.setf(ios::fixed, ios::floatfield);
+        time_file << tmp_t.toc() / 1000.0 << "\n";
+        time_file.close();
+
     }
     else
     {
@@ -100,6 +105,7 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     }
 	if (loop_index != -1)
 	{
+        TicToc t_loop_process;
         //printf(" %d detect loop with %d \n", cur_kf->index, loop_index);
         KeyFrame* old_kf = getKeyFrame(loop_index);
 
@@ -157,6 +163,11 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
             optimize_buf.push(cur_kf->index);
             m_optimize_buf.unlock();
         }
+        ofstream time_file(VINS_RESULT_PATH+"_loop_process_time.csv", ios::app);
+        time_file.setf(ios::fixed, ios::floatfield);
+        time_file << t_loop_process.toc() / 1000.0 << "\n";
+        time_file.close();
+
 	}
 	m_keyframelist.lock();
     Vector3d P;
@@ -455,6 +466,7 @@ void PoseGraph::optimize4DoF()
         m_optimize_buf.unlock();
         if (cur_index != -1)
         {
+            TicToc t_optimize_pose_graph;
             printf("optimize pose graph \n");
             TicToc tmp_t;
             m_keyframelist.lock();
@@ -610,6 +622,11 @@ void PoseGraph::optimize4DoF()
             }
             m_keyframelist.unlock();
             updatePath();
+
+          ofstream time_file(VINS_RESULT_PATH+"_optimize4DoF_pose_graph_time.csv", ios::app);
+          time_file.setf(ios::fixed, ios::floatfield);
+          time_file << t_optimize_pose_graph.toc() / 1000.0 << "," << i << "\n";
+          time_file.close();
         }
 
         if(keyframelist.size() > last_keyframelist_size){
@@ -670,6 +687,7 @@ void PoseGraph::optimize6DoF()
         m_optimize_buf.unlock();
         if (cur_index != -1)
         {
+            TicToc t_optimize_pose_graph;
             printf("optimize pose graph \n");
             TicToc tmp_t;
             m_keyframelist.lock();
@@ -814,6 +832,11 @@ void PoseGraph::optimize6DoF()
             }
             m_keyframelist.unlock();
             updatePath();
+
+          ofstream time_file(VINS_RESULT_PATH+"_optimize6DoF_pose_graph_time.csv", ios::app);
+          time_file.setf(ios::fixed, ios::floatfield);
+          time_file << t_optimize_pose_graph.toc() / 1000.0 << "," << i << "\n";
+          time_file.close();
         }
 
         if(keyframelist.size() > last_keyframelist_size){

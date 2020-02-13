@@ -276,6 +276,7 @@ void Estimator::processMeasurements()
         vector<pair<double, Eigen::Vector3d>> accVector, gyrVector;
         if(!featureBuf.empty())
         {
+            auto start_time_point = std::chrono::high_resolution_clock::now();
             feature = featureBuf.front();
             curTime = feature.first + td;
             while(1)
@@ -321,7 +322,7 @@ void Estimator::processMeasurements()
             auto current_output_time_point = std::chrono::high_resolution_clock::now();
             ofstream time_file(VINS_RESULT_PATH+"_vio_time.csv", ios::app);
             time_file.setf(ios::fixed, ios::floatfield);
-            time_file << std::chrono::duration<double>(current_output_time_point - last_vio_output_time_point).count() << endl;
+            time_file << std::chrono::duration<double>(current_output_time_point - start_time_point).count() << endl;
             last_vio_output_time_point = current_output_time_point;
             time_file.close();
 
