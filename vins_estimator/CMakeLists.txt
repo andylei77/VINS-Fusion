@@ -19,8 +19,13 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV REQUIRED)
 
 # message(WARNING "OpenCV_VERSION: ${OpenCV_VERSION}")
-
-find_package(Ceres REQUIRED)
+set(Ceres_DIR "/home/andy/selfdrivingcar/ceres/ceres/build/install/lib/cmake/Ceres/")
+find_package(Ceres REQUIRED PATHS "/home/andy/selfdrivingcar/ceres/ceres/build/install/lib/cmake/Ceres/" NO_DEFAULT_PATH)
+#find_package(Ceres REQUIRED)
+#set(CERES_INCLUDE_DIRS "/home/andy/selfdrivingcar/ceres/ceres/build/install/include/" ${CERES_INCLUDE_DIRS})
+#set(CERES_LIBRARIES "/home/andy/selfdrivingcar/ceres/ceres/build/install/lib/libceres.a")
+message(STATUS "CERES_INCLUDE_DIRS: ${CERES_INCLUDE_DIRS}")
+message(STATUS "CERES_LIBRARIES: ${CERES_LIBRARIES}")
 
 include_directories(${catkin_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
 
