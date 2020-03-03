@@ -1138,7 +1138,7 @@ void Estimator::optimization()
     options.max_num_iterations = NUM_ITERATIONS;
     ROS_INFO_STREAM("NUM_ITERATIONS: " << NUM_ITERATIONS);
     //options.use_explicit_schur_complement = true;
-    //options.minimizer_progress_to_stdout = true;
+    options.minimizer_progress_to_stdout = true;
     //options.use_nonmonotonic_steps = true;
     if (marginalization_flag == MARGIN_OLD)
         options.max_solver_time_in_seconds = SOLVER_TIME * 4.0 / 5.0;
@@ -1147,6 +1147,12 @@ void Estimator::optimization()
     TicToc t_solver;
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
+
+    ofstream time_file(VINS_RESULT_PATH+"_ceres_full_repeart.csv", ios::app);
+    time_file << summary.FullReport() << "\n";
+    //time_file.setf(ios::fixed, ios::floatfield);
+    time_file.close();
+
     //cout << summary.BriefReport() << endl;
     ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
     //printf("solver costs: %f \n", t_solver.toc());
