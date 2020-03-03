@@ -555,6 +555,7 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
         TicToc t_optimization_time;
         optimization();
         ROS_INFO_STREAM("t_optimization_time: " << t_optimization_time.toc()/1000.0);
+        ROS_INFO_STREAM("window_size: " << WINDOW_SIZE << " frame_count: " << frame_count);
         // post processing time
         TicToc t_post_processing_time;
         set<int> removeIndex;
@@ -1135,6 +1136,7 @@ void Estimator::optimization()
     //options.num_threads = 2;
     options.trust_region_strategy_type = ceres::DOGLEG;
     options.max_num_iterations = NUM_ITERATIONS;
+    ROS_INFO_STREAM("NUM_ITERATIONS: " << NUM_ITERATIONS);
     //options.use_explicit_schur_complement = true;
     //options.minimizer_progress_to_stdout = true;
     //options.use_nonmonotonic_steps = true;

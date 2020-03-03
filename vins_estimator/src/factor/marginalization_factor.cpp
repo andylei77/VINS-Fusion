@@ -275,6 +275,7 @@ void MarginalizationInfo::marginalize()
     }
     //ROS_DEBUG("thread summing up costs %f ms", t_thread_summing.toc());
     //ROS_INFO("A diff %f , b diff %f ", (A - tmp_A).sum(), (b - tmp_b).sum());
+    ROS_INFO_STREAM("marginalize A size: " << A.size() << " size: " << pos << "," << pos );
 
 
     //TODO
