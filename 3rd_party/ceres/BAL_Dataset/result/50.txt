@@ -1,0 +1,297 @@
+iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+   0  1.036908e+07    0.00e+00    1.02e+08   0.00e+00   0.00e+00  1.00e+04        0    7.49e-02    1.95e-01
+Iteration Start=1447.378480553999907
+SchurTime=      0.047762158000068666297
+CholeskyTime=        0.0018043920001673541265
+BackSubstitudeTime=        0.0074142459998256526887
+ComputeStepTime=0.062548361999915869092
+CostTime=       0.015483169999924939475
+pre_jaco=   6.8300000066301436163e-05
+JacobianTime=   0.057757615999889821978
+Iteration Time= 1447.5145042359999934
+   1  4.856944e+05    9.88e+06    5.13e+06   1.83e+01   9.96e-01  3.00e+04        1    1.36e-01    3.31e-01
+Iteration Start=1447.5145608469999843
+SchurTime=      0.040801951000048575224
+CholeskyTime=        0.0015058830001635215012
+BackSubstitudeTime=        0.0075050820000797102693
+ComputeStepTime=0.054424336000010953285
+CostTime=       0.015316273999815166462
+pre_jaco=   7.4497000014162040316e-05
+JacobianTime=   0.057840677000058349222
+Iteration Time= 1447.6423583149999104
+   2  4.489973e+05    3.67e+04    1.44e+05   1.99e+01   9.90e-01  9.00e+04        1    1.28e-01    4.59e-01
+Iteration Start=1447.6424140809999699
+SchurTime=      0.041662505999966015224
+CholeskyTime=        0.0015598570000747713493
+BackSubstitudeTime=        0.0075336129998504475225
+ComputeStepTime=0.055420638999976290506
+CostTime=       0.015478826000162371201
+pre_jaco=   6.5954999854511697777e-05
+JacobianTime=   0.057747511000115991919
+Iteration Time= 1447.7712704489999851
+   3  4.477789e+05    1.22e+03    5.64e+04   2.57e+01   1.05e+00  2.70e+05        1    1.29e-01    5.88e-01
+Iteration Start=1447.7713279029999285
+SchurTime=      0.040783913999803189654
+CholeskyTime=        0.0015035000001262233127
+BackSubstitudeTime=        0.0074333579998437926406
+ComputeStepTime=0.054269890999876224669
+CostTime=       0.01527657499991619261
+pre_jaco=   6.7568000076789758168e-05
+JacobianTime=   0.056976869999971313518
+Iteration Time= 1447.8980581610001082
+   4  4.475201e+05    2.59e+02    2.66e+04   2.89e+01   7.80e-01  3.28e+05        1    1.27e-01    7.15e-01
+Iteration Start=1447.8981309280000005
+SchurTime=      0.040613357999973231927
+CholeskyTime=        0.0025446620002185227349
+BackSubstitudeTime=        0.012352383000006739167
+ComputeStepTime=0.060058989000026485883
+CostTime=       0.015241582000044218148
+pre_jaco=   5.9307000128683284856e-05
+JacobianTime=   0.058268943000030049006
+Iteration Time= 1448.0319133789998887
+   5  4.475029e+05    1.72e+01    1.18e+04   2.28e+01   2.33e-01  2.84e+05        1    1.34e-01    8.48e-01
+Iteration Start=1448.0319730710000385
+SchurTime=      0.040754012999968836084
+CholeskyTime=        0.0015060299999731796561
+BackSubstitudeTime=        0.0074314989999493263895
+ComputeStepTime=0.054302167000059853308
+CostTime=       0.015303832999961741734
+pre_jaco=   6.6577999859873671085e-05
+JacobianTime=   0.057614469999862194527
+Iteration Time= 1448.1594060089998948
+   6  4.474838e+05    1.92e+01    1.63e+04   1.60e+01   2.60e-01  2.56e+05        1    1.27e-01    9.76e-01
+Iteration Start=1448.1594614139999067
+SchurTime=      0.040963330000067799119
+CholeskyTime=        0.0015067969998199259862
+BackSubstitudeTime=        0.0074254819999168830691
+ComputeStepTime=0.054474804999927073368
+CostTime=       0.015306636000104845152
+Iteration Time= 0.069905545999972673599
+   7  4.474957e+05   -1.20e+01    0.00e+00   1.20e+01  -2.81e-01  1.28e+05        1    6.99e-02    1.05e+00
+Iteration Start=1448.2293849770001088
+SchurTime=      0.041653570000107720261
+CholeskyTime=        0.0015607800000907445792
+BackSubstitudeTime=        0.0078592310001113219187
+ComputeStepTime=0.053671527999995305436
+CostTime=       0.015634465999937674496
+Iteration Time= 0.069427538000127242412
+   8  4.474921e+05   -8.32e+00    0.00e+00   6.77e+00  -1.98e-01  3.20e+04        1    6.94e-02    1.12e+00
+Iteration Start=1448.298832616000027
+SchurTime=      0.041254150999975536251
+CholeskyTime=        0.0015517479998834460275
+BackSubstitudeTime=        0.0074911279998559621163
+ComputeStepTime=0.052822341999899435905
+CostTime=       0.015208539000013843179
+pre_jaco=   6.6653999965637922287e-05
+JacobianTime=   0.057369526000002224464
+Iteration Time= 1448.4244525130000056
+   9  4.474791e+05    4.64e+00    7.15e+03   2.06e+00   1.17e-01  2.21e+04        1    1.26e-01    1.24e+00
+Iteration Start=1448.4245065990000967
+SchurTime=      0.040827696999940599198
+CholeskyTime=        0.0015516339999521733262
+BackSubstitudeTime=        0.007473737999816876254
+ComputeStepTime=0.054456896000147025916
+CostTime=       0.015170580999892990803
+pre_jaco=   6.4810000139914336614e-05
+JacobianTime=   0.057808977999911803636
+Iteration Time= 1448.552151282000068
+  10  4.474681e+05    1.11e+01    7.36e+03   1.41e+00   3.40e-01  2.14e+04        1    1.28e-01    1.37e+00
+Iteration Start=1448.5522067280001011
+SchurTime=      0.040880678000121406512
+CholeskyTime=        0.0015585319999900093535
+BackSubstitudeTime=        0.0074963769998248608317
+ComputeStepTime=0.054563998000048741233
+CostTime=       0.015238523999869357795
+pre_jaco=   6.4673999986553099006e-05
+JacobianTime=   0.057204378000051292474
+Iteration Time= 1448.6794170999999096
+  11  4.474658e+05    2.30e+00    2.69e+03   1.24e+00   1.86e-01  1.71e+04        1    1.27e-01    1.50e+00
+Iteration Start=1448.6794716179999796
+SchurTime=      0.040718141000070318114
+CholeskyTime=        0.0015014250000149331754
+BackSubstitudeTime=        0.0074238610000065818895
+ComputeStepTime=0.054211766999969768221
+CostTime=       0.015084245000025475747
+pre_jaco=   6.7716999865297111683e-05
+JacobianTime=   0.057079168000200297683
+Iteration Time= 1448.8060890369999925
+  12  4.474629e+05    2.85e+00    2.94e+03   9.91e-01   3.32e-01  1.65e+04        1    1.27e-01    1.62e+00
+Iteration Start=1448.8061425389998931
+SchurTime=      0.040726501000108328299
+CholeskyTime=        0.0018542020000040793093
+BackSubstitudeTime=        0.0078680960000383493025
+ComputeStepTime=0.05516458800002510543
+CostTime=       0.015868106999960218673
+pre_jaco=   6.0968999832766712643e-05
+JacobianTime=   0.058771641000021190848
+Iteration Time= 1448.9361919020000187
+  13  4.474618e+05    1.14e+00    8.80e+02   8.88e-01   3.43e-01  1.60e+04        1    1.30e-01    1.75e+00
+Iteration Start=1448.9362508340000204
+SchurTime=      0.040921732000015254016
+CholeskyTime=        0.0015514520000579068437
+BackSubstitudeTime=        0.0074674799998319940642
+ComputeStepTime=0.054572535000033894903
+CostTime=       0.015578394000158368726
+pre_jaco=   6.0203000202818657272e-05
+JacobianTime=   0.056633909999845855054
+Iteration Time= 1449.0632078799999363
+  14  4.474608e+05    9.76e-01    1.41e+03   8.62e-01   4.48e-01  1.60e+04        1    1.27e-01    1.88e+00
+Iteration Start=1449.0632618350000484
+SchurTime=      0.040788934999909542967
+CholeskyTime=        0.0016132150001340050949
+BackSubstitudeTime=        0.0075286380001671204809
+ComputeStepTime=0.054554158999962965026
+CostTime=       0.015272959999947488541
+pre_jaco=   7.4971999993067584001e-05
+JacobianTime=   0.057726271000092310715
+Iteration Time= 1449.1910357070000828
+  15  4.474599e+05    9.18e-01    1.59e+02   8.25e-01   8.93e-01  3.10e+04        1    1.28e-01    2.01e+00
+Iteration Start=1449.1911188179999499
+SchurTime=      0.04087379600014173775
+CholeskyTime=        0.0015521059999628050718
+BackSubstitudeTime=        0.0074922049998349393718
+ComputeStepTime=0.054556389000026683789
+CostTime=       0.015705631999935576459
+pre_jaco=   6.7879999960496206768e-05
+JacobianTime=   0.058163070999853516696
+Iteration Time= 1449.319754919999923
+  16  4.474583e+05    1.56e+00    1.41e+03   1.57e+00   1.07e+00  9.30e+04        1    1.29e-01    2.14e+00
+Iteration Start=1449.3198101150001094
+SchurTime=      0.04079788700005337887
+CholeskyTime=        0.0015688640000917075668
+BackSubstitudeTime=        0.0075142969999433262274
+ComputeStepTime=0.054569536000144580612
+CostTime=       0.015277198999910979182
+pre_jaco=   6.8201000203771400265e-05
+JacobianTime=   0.057754223999836540315
+Iteration Time= 1449.4476236670000162
+  17  4.474550e+05    3.36e+00    8.85e+02   4.33e+00   1.80e+00  2.79e+05        1    1.28e-01    2.26e+00
+Iteration Start=1449.4476896500000294
+SchurTime=      0.041531051999982082634
+CholeskyTime=        0.0015591320000112318667
+BackSubstitudeTime=        0.007500067999899329152
+ComputeStepTime=0.055211195000083534978
+CostTime=       0.015351142999861622229
+pre_jaco=   6.6901999844048987143e-05
+JacobianTime=   0.058237346000169054605
+Iteration Time= 1449.5767041399999471
+  18  4.474477e+05    7.24e+00    2.66e+03   1.08e+01   1.81e+00  8.37e+05        1    1.29e-01    2.39e+00
+Iteration Start=1449.5767599589999008
+SchurTime=      0.040923658000110663124
+CholeskyTime=        0.0015561669999897276284
+BackSubstitudeTime=        0.0074860429999716870952
+ComputeStepTime=0.054633616000046458794
+CostTime=       0.015204117999928712379
+pre_jaco=   6.6837999838753603399e-05
+JacobianTime=   0.057881765000047380454
+Iteration Time= 1449.7046920929999487
+  19  4.474329e+05    1.49e+01    2.41e+03   2.15e+01   2.03e+00  2.51e+06        1    1.28e-01    2.52e+00
+Iteration Start=1449.7047484689999237
+SchurTime=      0.040633857999864630983
+CholeskyTime=        0.0015194360000805318123
+BackSubstitudeTime=        0.0074084640000364743173
+ComputeStepTime=0.054104283000015129801
+CostTime=       0.015323147000117387506
+pre_jaco=   7.1820000130173866637e-05
+JacobianTime=   0.058221892000119623845
+Iteration Time= 1449.8326106080000955
+  20  4.474090e+05    2.39e+01    4.77e+03   3.22e+01   1.88e+00  7.53e+06        1    1.28e-01    2.65e+00
+Iteration Start=1449.8326644569999644
+SchurTime=      0.04087683499983540969
+CholeskyTime=        0.001569312000128775253
+BackSubstitudeTime=        0.0074311489997853641398
+ComputeStepTime=0.054559609000079944963
+CostTime=       0.015272284000047875452
+pre_jaco=   6.7795999939335160889e-05
+JacobianTime=   0.058057078000047113164
+Iteration Time= 1449.9607700999999906
+  21  4.473811e+05    2.79e+01    4.27e+03   3.50e+01   1.82e+00  2.26e+07        1    1.28e-01    2.78e+00
+Iteration Start=1449.9608276339999975
+SchurTime=      0.040831971999978122767
+CholeskyTime=        0.0015536060000158613548
+BackSubstitudeTime=        0.0076835980000851122895
+ComputeStepTime=0.054723251000041273073
+CostTime=       0.015270213999883708311
+pre_jaco=   7.1932000082597369328e-05
+JacobianTime=   0.059359147999884953606
+Iteration Time= 1450.0904009840000981
+  22  4.473617e+05    1.93e+01    4.14e+03   2.45e+01   1.58e+00  6.78e+07        1    1.30e-01    2.91e+00
+Iteration Start=1450.0904575629999727
+SchurTime=      0.041151746999958049855
+CholeskyTime=        0.0015601789998527237913
+BackSubstitudeTime=        0.0074969439999676978914
+ComputeStepTime=0.054894905999844922917
+CostTime=       0.015144024000164790777
+pre_jaco=   6.8454999791356385686e-05
+JacobianTime=   0.057883428999957686756
+Iteration Time= 1450.2186107869999887
+  23  4.473537e+05    8.06e+00    1.77e+03   8.49e+00   1.48e+00  2.03e+08        1    1.28e-01    3.04e+00
+Iteration Start=1450.2186681220000537
+SchurTime=      0.041052697999930387596
+CholeskyTime=        0.001563614000133384252
+BackSubstitudeTime=        0.0078783060000660043443
+ComputeStepTime=0.055204862999971737736
+CostTime=       0.015686124000012569013
+pre_jaco=   6.2420000176643952727e-05
+JacobianTime=   0.059224952000022312859
+Iteration Time= 1450.3489690940000401
+  24  4.473508e+05    2.92e+00    1.11e+03   1.65e+00   1.46e+00  6.10e+08        1    1.30e-01    3.17e+00
+Iteration Start=1450.3490237359999355
+SchurTime=      0.041107018000047901296
+CholeskyTime=        0.0015544850000424048631
+BackSubstitudeTime=        0.0074555119999786256813
+ComputeStepTime=0.054870322999931886443
+CostTime=       0.015262231000178871909
+pre_jaco=   7.2764999913488281891e-05
+JacobianTime=   0.058029916999885244877
+Iteration Time= 1450.4774129069999162
+  25  4.473498e+05    9.75e-01    4.46e+02   1.47e+00   1.47e+00  1.83e+09        1    1.28e-01    3.29e+00
+Iteration Start=1450.4774672099999862
+SchurTime=      0.041282435000084660714
+CholeskyTime=        0.001554749999968407792
+BackSubstitudeTime=        0.0080047950000334822107
+ComputeStepTime=0.055514354000024468405
+CostTime=       0.015736443999912808067
+
+Solver Summary (v 1.13.0-eigen-(3.3.4)-lapack-suitesparse-(5.1.2)-cxsparse-(3.1.9)-openmp)
+
+                                     Original                  Reduced
+Parameter blocks                        20531                    20481
+Parameters                              61743                    61593
+Residual blocks                         73967                    73967
+Residual                               147934                   147934
+
+Minimizer                        TRUST_REGION
+
+Dense linear algebra library            EIGEN
+Trust region strategy     LEVENBERG_MARQUARDT
+
+                                        Given                     Used
+Linear solver                     DENSE_SCHUR              DENSE_SCHUR
+Threads                                     1                        1
+Linear solver threads                       1                        1
+Linear solver ordering              AUTOMATIC                 20431,50
+Schur structure                         2,3,6                    2,3,6
+
+Cost:
+Initial                          1.036908e+07
+Final                            4.473498e+05
+Change                           9.921731e+06
+
+Minimizer iterations                       26
+Successful steps                           24
+Unsuccessful steps                          2
+
+Time (in seconds):
+Preprocessor                           0.1199
+
+  Residual evaluation                  0.3646
+  Jacobian evaluation                  1.2836
+  Linear solver                        1.3159
+Minimizer                              3.2465
+
+Postprocessor                          0.0035
+Total                                  3.3699
+
+Termination:                      CONVERGENCE (Function tolerance reached. |cost_change|/cost: 8.131562e-07 <= 1.000000e-06)
+
