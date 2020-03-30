@@ -201,6 +201,7 @@ void MarginalizationInfo::marginalize()
     }
 
     n = pos - m;
+    ROS_INFO_STREAM("marginalize m:" << m << " n:" << n);
     //ROS_INFO("marginalization, pos: %d, m: %d, n: %d, size: %d", pos, m, n, (int)parameter_block_idx.size());
     if(m == 0)
     {
