@@ -32,6 +32,20 @@ std::mutex m_buf;
 
 void img0_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
+
+      struct timespec time1 = {0, 0};
+      struct timespec time2 = {0, 0};
+      clock_gettime(CLOCK_REALTIME, &time1);
+      //clock_gettime(CLOCK_BOOTTIME, &time2);
+      //LOG(INFO) << " =========fix time_epoch_diff_ms===========";
+      //LOG(INFO) << "CLOCK_REALTIME: sec " << time1.tv_sec << " nsec " << time1.tv_nsec;
+      //LOG(INFO) << "CLOCK_BOOTTIME: sec " << time2.tv_sec << " nsec " << time2.tv_nsec;
+      uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+                                                    + ((int64_t) (time1.tv_nsec)) / 1000000);
+      double time_second_ = static_cast<double>(time_ms_)/1000.0;
+
+      std::cout << std::setprecision(20) << " curr_time_second: " << time_second_ << " received_msg_time_second: " << img_msg->header.stamp << std::endl;
+
     m_buf.lock();
     img0_buf.push(img_msg);
     m_buf.unlock();
@@ -251,8 +265,8 @@ int main(int argc, char **argv)
 
     ros::Subscriber sub_imu = n.subscribe(IMU_TOPIC, 2000, imu_callback, ros::TransportHints().tcpNoDelay());
     ros::Subscriber sub_feature = n.subscribe("/feature_tracker/feature", 2000, feature_callback);
-    ros::Subscriber sub_img0 = n.subscribe(IMAGE0_TOPIC, 100, img0_callback);
-    ros::Subscriber sub_img1 = n.subscribe(IMAGE1_TOPIC, 100, img1_callback);
+    ros::Subscriber sub_img0 = n.subscribe("/leftImage"/*IMAGE0_TOPIC*/, 100, img0_callback);
+    ros::Subscriber sub_img1 = n.subscribe("/rightImage"/*IMAGE1_TOPIC*/, 100, img1_callback);
     ros::Subscriber sub_restart = n.subscribe("/vins_restart", 100, restart_callback);
     ros::Subscriber sub_imu_switch = n.subscribe("/vins_imu_switch", 100, imu_switch_callback);
     ros::Subscriber sub_cam_switch = n.subscribe("/vins_cam_switch", 100, cam_switch_callback);

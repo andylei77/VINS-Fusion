@@ -30,7 +30,7 @@ Eigen::Vector3d c1Tc0, c0Tc1;
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "vins_estimator");
+	ros::init(argc, argv, "vins_estimator_kittiodomtest");
 	ros::NodeHandle n("~");
 	ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 
@@ -92,9 +92,22 @@ int main(int argc, char** argv)
 			//printf("%s\n", leftImagePath.c_str() );
 			//printf("%s\n", rightImagePath.c_str() );
 
+      struct timespec time1 = {0, 0};
+      struct timespec time2 = {0, 0};
+      clock_gettime(CLOCK_REALTIME, &time1);
+      //clock_gettime(CLOCK_BOOTTIME, &time2);
+      //LOG(INFO) << " =========fix time_epoch_diff_ms===========";
+      //LOG(INFO) << "CLOCK_REALTIME: sec " << time1.tv_sec << " nsec " << time1.tv_nsec;
+      //LOG(INFO) << "CLOCK_BOOTTIME: sec " << time2.tv_sec << " nsec " << time2.tv_nsec;
+      uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+                                                    + ((int64_t) (time1.tv_nsec)) / 1000000);
+      double time_second_ = static_cast<double>(time_ms_)/1000.0;
+
 			imLeft = cv::imread(leftImagePath, CV_LOAD_IMAGE_GRAYSCALE );
 			sensor_msgs::ImagePtr imLeftMsg = cv_bridge::CvImage(std_msgs::Header(), "mono8", imLeft).toImageMsg();
-			imLeftMsg->header.stamp = ros::Time(imageTimeList[i]);
+			//imLeftMsg->header.stamp = ros::Time(imageTimeList[i]);
+      imLeftMsg->header.stamp = ros::Time(time_second_);
+      std::cout << std::setprecision(20) << " time_ms_:" << time_ms_ << " time_second_:" << time_second_ << std::endl;
 			pubLeftImage.publish(imLeftMsg);
 
 			imRight = cv::imread(rightImagePath, CV_LOAD_IMAGE_GRAYSCALE );
@@ -103,6 +116,8 @@ int main(int argc, char** argv)
 			pubRightImage.publish(imRightMsg);
 
 
+			sleep(2);
+/*
 			estimator.inputImage(imageTimeList[i], imLeft, imRight);
 			
 			Eigen::Matrix<double, 4, 4> pose;
@@ -111,6 +126,7 @@ int main(int argc, char** argv)
 				fprintf (outFile, "%f %f %f %f %f %f %f %f %f %f %f %f \n",pose(0,0), pose(0,1), pose(0,2),pose(0,3),
 																	       pose(1,0), pose(1,1), pose(1,2),pose(1,3),
 																	       pose(2,0), pose(2,1), pose(2,2),pose(2,3));
+																	       */
 			
 			//cv::imshow("leftImage", imLeft);
 			//cv::imshow("rightImage", imRight);
