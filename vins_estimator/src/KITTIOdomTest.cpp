@@ -92,31 +92,55 @@ int main(int argc, char** argv)
 			//printf("%s\n", leftImagePath.c_str() );
 			//printf("%s\n", rightImagePath.c_str() );
 
+
+			imLeft = cv::imread(leftImagePath, CV_LOAD_IMAGE_GRAYSCALE );
+      imRight = cv::imread(rightImagePath, CV_LOAD_IMAGE_GRAYSCALE );
+			sensor_msgs::ImagePtr imLeftMsg = cv_bridge::CvImage(std_msgs::Header(), "mono8", imLeft).toImageMsg();
+      sensor_msgs::ImagePtr imRightMsg = cv_bridge::CvImage(std_msgs::Header(), "mono8", imRight).toImageMsg();
+
+			//imLeftMsg->header.stamp = ros::Time(imageTimeList[i]);
+      uint64_t time_ms_1;
+			double time_second_1;
+      {
       struct timespec time1 = {0, 0};
-      struct timespec time2 = {0, 0};
+      //struct timespec time2 = {0, 0};
       clock_gettime(CLOCK_REALTIME, &time1);
       //clock_gettime(CLOCK_BOOTTIME, &time2);
       //LOG(INFO) << " =========fix time_epoch_diff_ms===========";
       //LOG(INFO) << "CLOCK_REALTIME: sec " << time1.tv_sec << " nsec " << time1.tv_nsec;
       //LOG(INFO) << "CLOCK_BOOTTIME: sec " << time2.tv_sec << " nsec " << time2.tv_nsec;
-      uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+      time_ms_1 = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
                                                     + ((int64_t) (time1.tv_nsec)) / 1000000);
-      double time_second_ = static_cast<double>(time_ms_)/1000.0;
+      time_second_1 = static_cast<double>(time_ms_1)/1000.0;
 
-			imLeft = cv::imread(leftImagePath, CV_LOAD_IMAGE_GRAYSCALE );
-			sensor_msgs::ImagePtr imLeftMsg = cv_bridge::CvImage(std_msgs::Header(), "mono8", imLeft).toImageMsg();
-			//imLeftMsg->header.stamp = ros::Time(imageTimeList[i]);
-      imLeftMsg->header.stamp = ros::Time(time_second_);
-      std::cout << std::setprecision(20) << " time_ms_:" << time_ms_ << " time_second_:" << time_second_ << std::endl;
+      //imLeftMsg->header.stamp = ros::Time(time_second_1);
+      imLeftMsg->header.stamp = ros::Time((int64_t) (time1.tv_sec), (int64_t) (time1.tv_nsec));
+      }
+      std::cout << std::setprecision(20) << "left_image time_ms_1:" << time_ms_1 << " time_second_1:" << time_second_1 << std::endl;
 			pubLeftImage.publish(imLeftMsg);
 
-			imRight = cv::imread(rightImagePath, CV_LOAD_IMAGE_GRAYSCALE );
-			sensor_msgs::ImagePtr imRightMsg = cv_bridge::CvImage(std_msgs::Header(), "mono8", imRight).toImageMsg();
-			imRightMsg->header.stamp = ros::Time(imageTimeList[i]);
+
+      uint64_t time_ms_2;
+      double time_second_2;
+      {
+      struct timespec time1 = {0, 0};
+      //struct timespec time2 = {0, 0};
+      clock_gettime(CLOCK_REALTIME, &time1);
+      //clock_gettime(CLOCK_BOOTTIME, &time2);
+      //LOG(INFO) << " =========fix time_epoch_diff_ms===========";
+      //LOG(INFO) << "CLOCK_REALTIME: sec " << time1.tv_sec << " nsec " << time1.tv_nsec;
+      //LOG(INFO) << "CLOCK_BOOTTIME: sec " << time2.tv_sec << " nsec " << time2.tv_nsec;
+      time_ms_2 = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+                                                    + ((int64_t) (time1.tv_nsec)) / 1000000);
+      time_second_2 = static_cast<double>(time_ms_2)/1000.0;
+			//imRightMsg->header.stamp = ros::Time(imageTimeList[i]);
+      //imRightMsg->header.stamp = ros::Time(time_second_2);
+      imRightMsg->header.stamp = ros::Time((int64_t) (time1.tv_sec), (int64_t) (time1.tv_nsec));
+      }
+      std::cout << std::setprecision(20) << "right_image time_ms_2:" << time_ms_2 << " time_second_2:" << time_second_2 << std::endl;
 			pubRightImage.publish(imRightMsg);
 
-
-			sleep(2);
+			sleep(0.033);
 /*
 			estimator.inputImage(imageTimeList[i], imLeft, imRight);
 			

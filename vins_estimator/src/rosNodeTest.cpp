@@ -32,19 +32,14 @@ std::mutex m_buf;
 
 void img0_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
-
-      struct timespec time1 = {0, 0};
-      struct timespec time2 = {0, 0};
-      clock_gettime(CLOCK_REALTIME, &time1);
-      //clock_gettime(CLOCK_BOOTTIME, &time2);
-      //LOG(INFO) << " =========fix time_epoch_diff_ms===========";
-      //LOG(INFO) << "CLOCK_REALTIME: sec " << time1.tv_sec << " nsec " << time1.tv_nsec;
-      //LOG(INFO) << "CLOCK_BOOTTIME: sec " << time2.tv_sec << " nsec " << time2.tv_nsec;
-      uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
-                                                    + ((int64_t) (time1.tv_nsec)) / 1000000);
-      double time_second_ = static_cast<double>(time_ms_)/1000.0;
-
-      std::cout << std::setprecision(20) << " curr_time_second: " << time_second_ << " received_msg_time_second: " << img_msg->header.stamp << std::endl;
+struct timespec time1 = {0, 0};
+    clock_gettime(CLOCK_REALTIME, &time1);
+    uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+                                              + ((int64_t) (time1.tv_nsec)) / 1000000);
+    double time_second_ = static_cast<double>(time_ms_)/1000.0;
+    uint64_t time_ns_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000000000
+                                              + ((int64_t) (time1.tv_nsec)));
+    std::cout << std::setprecision(20) << "left_image nsec curr_time_ns: " << time_ns_ << " received_msg_time_ns: " << img_msg->header.stamp.toNSec() << std::endl;
 
     m_buf.lock();
     img0_buf.push(img_msg);
@@ -53,6 +48,15 @@ void img0_callback(const sensor_msgs::ImageConstPtr &img_msg)
 
 void img1_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
+    struct timespec time1 = {0, 0};
+    clock_gettime(CLOCK_REALTIME, &time1);
+    uint64_t time_ms_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000
+                                              + ((int64_t) (time1.tv_nsec)) / 1000000);
+    double time_second_ = static_cast<double>(time_ms_)/1000.0;
+    uint64_t time_ns_ = static_cast<uint64_t>(((int64_t) (time1.tv_sec)) * 1000000000
+                                              + ((int64_t) (time1.tv_nsec)));
+    std::cout << std::setprecision(20) << "right_image nsec curr_time_ns: " << time_ns_ << " received_msg_time_ns: " << img_msg->header.stamp.toNSec() << std::endl;
+
     m_buf.lock();
     img1_buf.push(img_msg);
     m_buf.unlock();
